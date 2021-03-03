@@ -1,0 +1,61 @@
+<li id="post-<%= post._id %>">
+    <% if(post.postImage && post.postImage.length>0){%> 
+        <img src="<%= post.postImage %>" alt="post image" class="image-style" width="300px" height="200px" srcset="">
+        <%}%>
+    <% if(locals.user && locals.user.id == post.user.id){%> 
+        <small>
+            <a class="delete-post-button"  href="/posts/destroy/<%= post.id %>">X</a>
+        </small>
+        <%} %>
+   
+    <div><%=post.content %></div>
+    <small>
+        <% if(locals.user) {%> 
+            <a class="toggle-like-button" data-likes="<%= post.likes.length %>" href="/likes/toggle/?id=<%=post._id%>&type=Post">
+             <img src="https://www.flaticon.com/svg/vstatic/svg/1216/1216649.svg?token=exp=1614447010~hmac=bae0ede71970c589f4b6713d07130732" alt="" width="10px" height="10px">    <%= post.likes.length %> Likes
+            </a>
+            <%}else{%>
+                <img src="https://www.flaticon.com/svg/vstatic/svg/1216/1216649.svg?token=exp=1614447010~hmac=bae0ede71970c589f4b6713d07130732" alt="" width="10px" height="10px">   <%= post.likes.length %>Likes
+            <%}%>
+    </small>
+    <small><%= post.user.name %></small>
+    <div class="post-comments">
+        <% if(locals.user){%> 
+            <form action="/comments/create" method="POST" id="post-<%= post._id %>-comments-form">
+                <input type="text" name="content" placeholder="Type here to add comment...">
+                <input type="hidden" name="post" value="<%= post._id %>">
+                <input type="submit" value="Add Comment">
+            </form>
+            <%} %>
+
+        <div class="post-comments-list">
+            <ul id="post-comments-<%= post._id %>">
+                <% for(comment of post.comments){%> 
+                        <li id="comments-<%=comment._id%>">
+                            <% if(locals.user && locals.user.id == comment.user._id){%> 
+                                <small>
+                                    <a class="delete-comment-button" href="/comments/destroy/<%= comment._id %>">X</a>
+                                </small>
+                            <%}%>
+                        <%= comment.content %>
+                        <br>
+                        <small>
+                            <%= comment.user.name %>
+                        </small>
+                        <small>
+                            <% if(locals.user) {%>
+                                    <a class="toggle-like-button" data-likes="<%= comment.likes.length %>" href="/likes/toggle/?id=<%=comment._id%>&type=Comment">
+                                        <img src="https://www.flaticon.com/svg/vstatic/svg/1216/1216649.svg?token=exp=1614447010~hmac=bae0ede71970c589f4b6713d07130732" alt="" width="10px" height="10px">   <%= comment.likes.length %> Likes
+                                    </a>
+                                <%}else{%>
+                                    <img src="https://www.flaticon.com/svg/vstatic/svg/1216/1216649.svg?token=exp=1614447010~hmac=bae0ede71970c589f4b6713d07130732" alt="" width="10px" height="10px">  <%= comment.likes.length %> Likes
+                                    <%}%>
+                        </small>
+                        </li>
+                            
+                        
+                    <%}%>
+            </ul>
+        </div>
+    </div>
+</li>

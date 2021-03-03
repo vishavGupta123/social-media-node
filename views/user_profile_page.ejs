@@ -1,0 +1,27 @@
+<h1>
+    Codeial / Profile page
+</h1>
+
+<img src="<%= profile_user.avatar %>" alt="<%= profile_user.name %>" width="100px" height="100px">
+
+<% if(user.id == profile_user._id ){%> 
+    <!-- if the user matches then show the form else show the profile info -->
+    <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="POST" style="display: flex;flex-direction: column;width: 25%;">
+        <input type="text" name="name" placeholder="Your name" value="<%= profile_user.name %>" style="margin-bottom: 10px;">
+        <input type="email" name="email" placeholder="Your email" value="<%= profile_user.email %>" style="margin-bottom: 10px;">
+        <input type="file" name="avatar" placeholder="Profile picture" style="margin-bottom: 10px;">
+        <input type="submit" value="Update">
+    </form>
+    <%}else {%> 
+        <p><%= profile_user.name %></p>
+        <p><%= profile_user.email %></p>
+        <% if(are_friends){%> 
+            <p>
+                <a href="/users/remove-friend/<%= profile_user._id %>">Remove Friends</a>
+            </p>
+            <%} else if(!are_friends) {%>
+                <p>
+                    <a href="/users/add-friend/<%= profile_user._id %>">Add Friend</a>
+                </p>
+            <%}%>
+        <%} %>
